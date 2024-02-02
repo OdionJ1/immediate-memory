@@ -1,0 +1,81 @@
+@import '../../common/styles/styles.scss';
+
+.container {
+  height: 100vh;
+  min-height: fit-content;
+  background: radial-gradient(circle, #ffffff, $im-purple);
+  
+  .middle-box {
+    width: 60%;
+    background-color: $im-purple;
+    margin: 4rem auto;
+    padding-bottom: 2rem;
+    border-radius: 0.5rem;
+
+    @media screen and (max-width: 40rem) {
+      width: 90%;
+      top: 3%;
+    }
+
+    .header {
+      color: #ffffff;
+      font-weight: 400;
+      text-align: center;
+      font-size: 1.7rem;
+      padding-top: 2rem;
+    }
+
+    .form {
+      width: 80%;
+      margin: 1rem auto;
+
+      .error-text{
+        color: $im-red;
+        font-size: 1rem;
+      }
+
+
+      .form-control {
+        position: relative;
+
+        label {
+          color: #ffffff
+        }
+
+        .input {
+          @include inputStyles();
+        }
+
+        .icon {
+          cursor: pointer;
+          position: absolute;
+          right: 1rem;
+          top: 2.1rem;
+        }
+      }
+
+      .submit-btn-container {
+        margin-top: 1rem;
+        text-align: center;
+
+        button {
+          @include whiteBtnStyles();
+        }
+      }
+    }
+
+    .sign-in-page-link-container{
+      text-align: center;
+      color: #ffffff;
+
+      p {
+
+        span {
+          text-decoration: underline;
+          cursor: pointer;
+          color: #000000;
+        }
+      }
+    }
+  }
+}

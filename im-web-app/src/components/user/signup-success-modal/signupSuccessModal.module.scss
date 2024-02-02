@@ -1,0 +1,28 @@
+@import '../../../common/styles/styles.scss';
+
+.container {
+  text-align: center;
+
+  .img-container {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+
+    img {
+      width: 20rem;
+    }
+  }
+
+
+  .text{
+    color: #00a2ff;
+  }
+
+  .button {
+    @include btnStyles();
+    margin: 1rem 0rem;
+    font-size: 1.5rem;
+    background-color: #00a2ff;
+    color: #ffffff;
+  }
+}

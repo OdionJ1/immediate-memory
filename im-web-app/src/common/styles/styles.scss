@@ -1,0 +1,96 @@
+
+
+$im-purple: #5d5dfe;
+$im-purple-light: #7979f9;
+$im-purple-lighter: #5f5f9f;
+$im-red: #ff0000;
+
+
+@mixin inputStyles {
+  box-sizing: border-box;
+  margin: 0.7rem 0;
+  width: 100%;
+  padding: 0.4rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.5rem;
+  outline: none;
+  font-size: 1rem;
+  transition: all 0.4s ease;
+
+  &:focus {
+    border: #80bdff;
+    box-shadow: 0 0 0 0.2rem #80bdff;
+  }
+}
+
+@mixin btnStyles {
+  cursor: pointer;
+  background-color: transparent;
+  font-size: 1.1rem;
+  border: none;
+  padding: 0.5rem;
+  color: #ffffff;
+  border-radius: 0.25rem;
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: #cecccc;
+
+    &:hover {
+      background-color: #cecccc;
+    }
+  }
+}
+
+@mixin whiteBtnStyles {
+  @include btnStyles();
+  background-color: #ffffff;
+  color: $im-purple;
+
+  &:active {
+    background-color: #ffffff;
+  }
+
+  &:hover {
+    background-color: whitesmoke;
+  }
+}
+
+@mixin purpleBtnStyles {
+  @include btnStyles();
+  background-color: $im-purple;
+  color: #ffffff;
+
+  &:active {
+    background-color: $im-purple;
+  }
+
+  &:hover {
+    background-color: #9494f1;
+  }
+}
+
+@mixin controlBtnStyles {
+  @include btnStyles();
+  background: linear-gradient(#3535e1, #b8b8e3);
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  font-weight: 600;
+
+  &:hover {
+    background: linear-gradient(#3535e1, #efeff4);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+
+    &:hover {
+      background: linear-gradient(#3535e1, #b8b8e3);
+    }
+  }
+
+  &:active {
+    background: linear-gradient(#3535e1, #b8b8e3);
+  }
+}

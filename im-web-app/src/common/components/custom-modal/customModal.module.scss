@@ -1,0 +1,40 @@
+
+
+.container {
+  background-color: #ffffff;
+  width: 50%;
+  min-width: 20rem;
+  margin: 20% auto;
+  animation: expand 0.3s linear;
+
+  @keyframes expand {
+    from {
+      opacity: 0;
+      transform: translate(0, -100%);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate(0);
+    }
+  }
+
+  @media screen and (max-width: 60rem) {
+    width: 80%!important;
+  }
+
+  .close-button-wrapper {
+    width: 100%;
+    text-align: end;
+
+    .close-button {
+      cursor: pointer;
+      background-color: whitesmoke;
+      font-size: 2rem;
+      background-color: transparent;
+      border: none;
+      text-align: end;
+      margin-right: 1rem;
+    }
+  }
+}

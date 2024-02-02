@@ -1,0 +1,49 @@
+@import '../../../common/styles/styles.scss';
+
+.container {
+
+  .header {
+    font-size: 1.5rem;
+    color: $im-purple;
+    text-align: center;
+  }
+
+  .form {
+    width: 80%;
+    margin: 1rem auto;
+
+    .error-text{
+      color: $im-red;
+      font-size: 1rem;
+    }
+
+
+    .form-control {
+      position: relative;
+
+      label {
+        color: $im-purple
+      }
+
+      .input {
+        @include inputStyles();
+      }
+
+      .icon {
+        cursor: pointer;
+        position: absolute;
+        right: 1rem;
+        top: 2.1rem;
+      }
+    }
+
+    .submit-btn-container {
+      text-align: center;
+
+      button {
+        @include purpleBtnStyles();
+        margin: 1rem 0rem;
+      }
+    }
+  }
+}

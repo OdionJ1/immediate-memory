@@ -1,0 +1,173 @@
+@import '../../../common/styles/styles.scss';
+
+.container {
+  background-color: $im-purple-lighter;
+  height: 100vh;
+
+  .nav-items-container {
+    display: flex;
+
+    .nav-item {
+      list-style-type: none;
+      color: #ffffff;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-left: 2rem;
+      white-space: nowrap;
+
+      &:hover {
+        font-style: italic;
+      }
+    }
+  }
+
+  .icon-container {
+    display: none;
+  }
+
+  .main {
+    border-radius: 0.5rem;
+    background-color: $im-purple-light;
+    width: 50%;
+    margin: 0rem auto;
+    margin-top: 3rem;
+    height: 70%;
+    min-height: 45rem;
+    padding: 1rem;
+
+    @media screen and (max-width: 44rem) {
+      width: 80%;
+    }
+
+    .contents-wrapper {
+      text-align: center;
+      width: 100%;
+      height: 100%;
+      min-height: fit-content;
+
+
+      .score {
+        color: #ffffff;
+        font-size: 1.5rem;
+        text-align: end;
+        font-style: italic;
+        margin-top: -0.7rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .correct-ans {
+        color: #ffffff;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .answer-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #bdc9c2f3;
+        height: 20%;
+        width: 80%;
+        margin: 0rem auto;
+        border-radius: 0.5rem;
+        font-size: 3rem;
+        color: #ffffff;
+      }
+
+      .hr {
+        margin-top: 2rem;
+        height: 0.15rem;
+        border-radius: 0.5rem;
+        background-color: grey;
+        opacity: 0.5;
+      }
+      
+      .controls-section {
+        display: flex;
+        justify-content: space-between;
+        height: 20rem;
+        width: 25rem;
+        margin: 0rem auto;
+        margin-top: 3rem;
+        
+        
+        @media screen and (max-width: 62rem) {
+          width: 90%;
+          height: 18rem;
+        }
+
+        .numbers-grid {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          width: 100%;
+          height: 100%;
+          
+          .num-btn {
+            @include controlBtnStyles();
+            height: 30%;
+            width: 30%;
+          }
+        }
+
+        .clear-and-zero-container {
+          display: flex;
+          flex-direction: column;
+          margin-left: 0.75rem;
+
+          .zero-btn {
+            @include controlBtnStyles();
+            height: 47%;
+            margin-bottom: 0.75rem
+
+          }
+
+          .clear-btn {
+            @include controlBtnStyles();
+            height: 46%
+          }
+        }
+      }
+
+      .validate-btn {
+        @include controlBtnStyles();
+        width: 25rem;
+        padding: 0.75rem 0;
+
+        @media screen and (max-width: 62rem) {
+          width: 90%;
+        }
+      }
+
+      .start-btn-container {
+        text-align: center;
+        margin-top: 2.5rem;
+
+        .start-btn {
+          @include purpleBtnStyles();
+          font-size: 2rem;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 44rem) {
+
+  .container {
+
+    .nav-items-container {
+      display: none;
+    }
+
+    .icon-container {
+      display: block;
+    }
+  }
+}
+
+:export {
+  im-purple: $im-purple;
+  im-purple-light: $im-purple-light;
+  im-red: $im-red;
+}

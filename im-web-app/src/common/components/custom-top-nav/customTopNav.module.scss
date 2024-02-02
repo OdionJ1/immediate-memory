@@ -1,0 +1,24 @@
+@import '../../styles/styles.scss';
+
+
+.container {
+  height: 3.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $im-purple;
+
+  h1 {
+    margin-left: 2rem;
+    color: #ffffff;
+    cursor: pointer;
+
+    @media screen and (max-width: 30rem) {
+      font-size: 1.5rem;
+    }
+  }
+
+  .right-section {
+    margin-right: 2rem;
+  }
+}

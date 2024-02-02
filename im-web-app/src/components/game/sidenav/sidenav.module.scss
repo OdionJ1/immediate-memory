@@ -1,0 +1,48 @@
+@import '../../../common/styles/styles.scss';
+
+.container {
+  background-color: $im-purple;
+  position: fixed;
+  color: #ffffff;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 15rem;
+  transform: translate(100%);
+  transition: all 0.4s;
+
+  .contents {
+    padding: 0.25rem;
+
+    .close-icon {
+      float: right;
+      font-weight: 400;
+      font-size: 2rem;
+      animation: rotateIcon 0.7s ease 0.4s;
+      cursor: pointer;
+  
+      @keyframes rotateIcon {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    }
+  
+    .nav-items-container {
+      list-style-type: none;
+      padding-top: 4rem;
+      margin-left: 1rem;
+  
+      .nav-item {
+        display: flex;
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        cursor: pointer;
+
+        &:hover {
+          font-style: italic;
+        }
+      }
+    }
+  }
+}
