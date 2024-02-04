@@ -24,7 +24,7 @@ export const globalConstants = ((): GlobalConstants => {
         }
       case RunMode.live:
         return {
-          baseUrl: 'https://immediate-memory.azurewebsites.net',
+          baseUrl: 'https://im-web-api-c16d20e9de10.herokuapp.com',
           runMode: runMode
        }
       default:
