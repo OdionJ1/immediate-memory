@@ -20,7 +20,7 @@ const useSessionHandler = () => {
     })
 
     dispatch(setCurrentUser({ ...user }))
-    navigate('/*')
+    navigate(0)
   }
 
   const resumeUserSession = (user: User) => {
@@ -31,7 +31,7 @@ const useSessionHandler = () => {
     dispatch(setCurrentUser(null))
     removeCookie('sessionId')
 
-    navigate('/signup')
+    // navigate('/signup')
   }
 
   return {

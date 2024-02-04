@@ -51,6 +51,8 @@ const Sidenav: React.FC<Props> = ({ extend, close }) => {
           </span>
 
           <ul className={styles['nav-items-container']}>
+            <li className={styles['nav-item']}> <IconWrapper icon='person' iconStyles={navItemsIconStyles} /> Sign in</li>
+            <li className={styles['nav-item']}> <IconWrapper icon='person' iconStyles={navItemsIconStyles} /> Sign up</li>
             <li className={styles['nav-item']}> <IconWrapper icon='menu_book' iconStyles={navItemsIconStyles} /> Guide</li>
             <li className={styles['nav-item']}><IconWrapper icon='account_circle' iconStyles={navItemsIconStyles} /> View profile</li>
             <li className={styles['nav-item']} onClick={endUserSession}> <IconWrapper icon='logout' iconStyles={navItemsIconStyles} /> Logout</li>

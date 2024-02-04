@@ -1,14 +1,10 @@
 import React, { useState, useEffect, ChangeEvent } from 'react'
-import { SignUpFormType } from '../../models/signupFormType';
-import { createUser } from '../../services/user.service';
+import { SignUpFormType } from '../../../models/signupFormType';
+import { createUser } from '../../../services/user.service';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import * as EmailValidator from 'email-validator';
-import CustomTopnav from '../../common/components/custom-top-nav/CustomTopnav';
-import CustomModal from '../../common/components/custom-modal/CustomModal';
-import SignupSuccessModal from '../../components/user/signup-success-modal/SignupSuccessModal';
-import styles from './signup.module.scss'
-import SignInModal from '../../components/user/sign-in-modal/SignInModal';
+import styles from './signupModal.module.scss'
 
 
 const defaultFormValues: SignUpFormType = {
@@ -19,14 +15,16 @@ const defaultFormValues: SignUpFormType = {
   confirmPassword: ''
 }
 
-const Signup = () => {
+interface Props {
+  openSigninModal: () => void
+}
+
+const SignupModal:React.FC<Props> = ({ openSigninModal }) => {
   const navigate = useNavigate()
   const [cookies] = useCookies()
   const [emailError, setEmailError] = useState<string | null>(null)
   const [passwordError, setPasswordError] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState<boolean>(false)
-  const [successModalIsOpen, setSuccessModalIsOpen] = useState<boolean>(false)
-  const [signInModalIsOpen, setSignInModalIsOpen] = useState<boolean>(false)
   const [submitErrorMessage, setSubmitErrorMessage] = useState<string | null>('')
 
   const [signUpForm, setSignupForm] = useState<SignUpFormType>(defaultFormValues)
@@ -82,7 +80,6 @@ const Signup = () => {
     try {
       const response = await createUser(signUpForm)
       if(response.status === 201) {
-        setSuccessModalIsOpen(true)
         setSignupForm({...defaultFormValues})
       }
     } catch (err: any) {
@@ -110,9 +107,9 @@ const Signup = () => {
  
   return (
     <div className={styles['container']}>
-      <CustomTopnav />
-      <div className={styles['middle-box']}>
         <h1 className={styles['header']}>Signup</h1>
+
+      <div className={styles['body']}>
 
         <form className={styles['form']}>
           <div className={styles['form-control']}>
@@ -158,25 +155,11 @@ const Signup = () => {
         </form>
 
         <div className={styles['sign-in-page-link-container']}>
-          <p>Already registered? &nbsp;<span onClick={() => setSignInModalIsOpen(true)}>Sign in</span></p>
+          <p>Already registered? &nbsp;<span onClick={openSigninModal}>Sign in</span></p>
         </div>
       </div>
-
-      {
-        successModalIsOpen && 
-        <CustomModal closeModal={() => setSuccessModalIsOpen(false)} margin='5% auto' width='25rem'>
-          <SignupSuccessModal closeModal={() => setSuccessModalIsOpen(false)}/>
-        </CustomModal>
-      }
-
-      {
-        signInModalIsOpen &&
-        <CustomModal closeModal={() => setSignInModalIsOpen(false)} margin='5% auto' width='40%'>
-          <SignInModal />
-        </CustomModal>
-      }
     </div>
   )
 }
 
-export default Signup
+export default SignupModal

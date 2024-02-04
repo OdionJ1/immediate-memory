@@ -1,15 +1,28 @@
 import React, { useState } from 'react'
-import CustomTopnav from '../../../common/components/custom-top-nav/CustomTopnav'
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { User } from '../../models/user';
+import CustomTopnav from '../../common/components/custom-top-nav/CustomTopnav'
 import ProgressBar from "@ramonak/react-progress-bar";
-import useSessionHandler from '../../../common/components/auth/useSessionHandler'
-import IconWrapper from '../../../common/components/icon-wrapper/IconWrapper'
-import Sidenav from '../../../components/game/sidenav/Sidenav'
+import useSessionHandler from '../../common/components/auth/useSessionHandler'
+import IconWrapper from '../../common/components/icon-wrapper/IconWrapper'
+import Sidenav from '../../components/game/sidenav/Sidenav'
 import useGame from './useGame'
+import CustomModal from '../../common/components/custom-modal/CustomModal';
+import ResultModal from '../../components/game/result-modal/ResultModal';
+import SignupModal from '../../components/user/sign-up-modal/SignupModal';
+import SignInModal from '../../components/user/sign-in-modal/SignInModal';
 import styles from './game.module.scss'
-import CustomModal from '../../../common/components/custom-modal/CustomModal';
-import ResultModal from '../../../components/game/result-modal/ResultModal';
+
+
+enum Modal {
+  signupModal = 'signupModal',
+  signinModal = 'signinModal',
+  guideModal = 'guideModal'
+}
 
 const Game = () => {
+  const currentUser = useSelector<RootState>(({ user: { currentUser }}) => currentUser) as User | null
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const
   const { endUserSession } = useSessionHandler()
   
@@ -29,8 +42,23 @@ const Game = () => {
     showUserAnswer,
     startGame
   } = useGame()
-
+  
   const [sidenavIsExtended, setSidenavIsExtended] = useState<boolean>(false)
+  const [modalToRender, setModalToRender] = useState<Modal | null>(null)
+  
+
+  const renderModal = (modal: Modal) => {
+    switch(modal) {
+      case Modal.signupModal:
+        return <SignupModal openSigninModal={() => setModalToRender(Modal.signinModal)}/>
+      case Modal.signinModal:
+        return <SignInModal />
+      
+      default:
+        return <></>
+    }
+  }
+
 
   return (
     <div className={styles['container']}>
@@ -42,9 +70,17 @@ const Game = () => {
               <IconWrapper icon='menu' iconStyles={{ color: '#ffffff', fontSize: '2rem' }} action={() => setSidenavIsExtended(!sidenavIsExtended)}/>
             </div>
             <ul className={styles['nav-items-container']}>
+              {
+                !currentUser && (
+                  <>
+                    <li className={styles['nav-item']} onClick={() => setModalToRender(Modal.signinModal)}>Sign in</li>
+                    <li className={styles['nav-item']} onClick={() => setModalToRender(Modal.signupModal)}>Sign up</li>
+                  </>
+                )
+              }
+              {currentUser && <li className={styles['nav-item']}>View profile</li>}
               <li className={styles['nav-item']}>Guide</li>
-              <li className={styles['nav-item']}>View profile</li>
-              <li className={styles['nav-item']} onClick={endUserSession}>Logout</li>
+              {currentUser && <li className={styles['nav-item']} onClick={endUserSession}>Logout</li>}
             </ul>
           </>
         }
@@ -105,6 +141,13 @@ const Game = () => {
         resultModalIsOpen && 
         <CustomModal closeModal={() => setResultModalIsOpen(false)} margin='5% auto' width='40%'>
           <ResultModal correctAnswer={randomNumber} score={score} restart={startGame} />
+        </CustomModal>
+      }
+
+      {
+        modalToRender && !resultModalIsOpen &&
+        <CustomModal closeModal={() => setModalToRender(null)} margin='5% auto'>
+          {renderModal(modalToRender)}
         </CustomModal>
       }
 

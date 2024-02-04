@@ -12,5 +12,5 @@ export const withAuthApi = <T extends AuthAxiosInstance>(Component: React.Compon
 
   if(!authApi) return <></>
 
-  return <Component {...props as T} authApi={authApi} />
+  return <Component {...props as T } authApi={authApi} />
 }

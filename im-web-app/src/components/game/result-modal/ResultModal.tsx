@@ -17,11 +17,11 @@ interface Props extends AuthAxiosInstance {
 
 const ResultModal: React.FC<Props> = ({ authApi, correctAnswer, score, restart }) => {
   const dispatch = useDispatch()
-  const currentUser = useSelector<RootState>(({ user: { currentUser }}) => currentUser) as User
+  const currentUser = useSelector<RootState>(({ user: { currentUser }}) => currentUser) as User | null
 
   useEffect(() => {
     (async () => {
-      if(score > currentUser.highScore){
+      if(currentUser && score > currentUser.highScore){
         dispatch(setCurrentUser({ ...currentUser, highScore: score }))
         await updateUser(authApi, { ...currentUser, highScore: score })
       }
@@ -51,7 +51,7 @@ const ResultModal: React.FC<Props> = ({ authApi, correctAnswer, score, restart }
 
         <div className={styles['stat']}>
           <p className={styles['label']}>High score:</p>
-          <p>{ currentUser.highScore }</p>
+          <p>{ currentUser ? currentUser.highScore : score }</p>
         </div>
       </div>
       
