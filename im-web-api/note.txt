@@ -1,2 +1,1 @@
-mongodb user pass: 6qciuCWrkPsNbNdY
-mongodb username: im-user
+https://aaronluna.dev/blog/continuously-deploy-heroku-azure-devops/

@@ -12,7 +12,7 @@ import { UserModule } from './user/user.module';
     ConfigModule.forRoot({
       load: [configuration]
     }),
-    MongooseModule.forRoot('mongodb+srv://im-user:6qciuCWrkPsNbNdY@cluster0.aj1f0.mongodb.net/im-db?retryWrites=true&w=majority')
+    MongooseModule.forRoot(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.aj1f0.mongodb.net/im-db?retryWrites=true&w=majority`)
   ],
   controllers: [AppController],
   providers: [AppService],
