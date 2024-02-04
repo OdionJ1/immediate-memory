@@ -1,4 +1,7 @@
 import React, { CSSProperties, useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../redux/store'
+import { User } from '../../../models/user'
 import useSessionHandler from '../../../common/components/auth/useSessionHandler'
 import IconWrapper from '../../../common/components/icon-wrapper/IconWrapper'
 import styles from './sidenav.module.scss'
@@ -12,6 +15,8 @@ interface Props {
 }
 
 const Sidenav: React.FC<Props> = ({ extend, close, openSigninModal, openSignupModal }) => {
+  const currentUser = useSelector<RootState>(({ user: { currentUser }}) => currentUser) as User | null
+
   const ref: any = useRef()
   const { endUserSession } = useSessionHandler()
 
@@ -53,11 +58,18 @@ const Sidenav: React.FC<Props> = ({ extend, close, openSigninModal, openSignupMo
           </span>
 
           <ul className={styles['nav-items-container']}>
-            <li className={styles['nav-item']}> <IconWrapper icon='person' iconStyles={navItemsIconStyles} action={openSigninModal}/> Sign in</li>
-            <li className={styles['nav-item']}> <IconWrapper icon='person' iconStyles={navItemsIconStyles} action={openSignupModal}/> Sign up</li>
+            {
+              !currentUser && (
+                <>
+                  <li className={styles['nav-item']} onClick={openSigninModal}> <IconWrapper icon='person' iconStyles={navItemsIconStyles}/> Sign in</li>
+                  <li className={styles['nav-item']} onClick={openSignupModal}> <IconWrapper icon='person' iconStyles={navItemsIconStyles} /> Sign up</li>
+                </>
+              )
+            }
             <li className={styles['nav-item']}> <IconWrapper icon='menu_book' iconStyles={navItemsIconStyles} /> Guide</li>
-            <li className={styles['nav-item']}><IconWrapper icon='account_circle' iconStyles={navItemsIconStyles} /> View profile</li>
-            <li className={styles['nav-item']} onClick={endUserSession}> <IconWrapper icon='logout' iconStyles={navItemsIconStyles} /> Logout</li>
+            {currentUser && <li className={styles['nav-item']}><IconWrapper icon='account_circle' iconStyles={navItemsIconStyles} /> View profile</li>}
+            {currentUser && <li className={styles['nav-item']} onClick={endUserSession}> <IconWrapper icon='logout' iconStyles={navItemsIconStyles} /> Logout</li>}
+            
           </ul>
         </div>
       }
