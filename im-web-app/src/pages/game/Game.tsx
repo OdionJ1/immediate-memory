@@ -135,7 +135,12 @@ const Game = () => {
 
       </main>
 
-      <Sidenav extend={sidenavIsExtended} close={() => setSidenavIsExtended(false)}/>
+      <Sidenav 
+        extend={sidenavIsExtended} 
+        close={() => setSidenavIsExtended(false)} 
+        openSigninModal={() => setModalToRender(Modal.signinModal)} 
+        openSignupModal={() => setModalToRender(Modal.signupModal)}
+      />
 
       {
         resultModalIsOpen && 

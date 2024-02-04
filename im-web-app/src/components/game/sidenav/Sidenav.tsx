@@ -5,11 +5,13 @@ import styles from './sidenav.module.scss'
 
 
 interface Props {
+  openSigninModal: () => void
+  openSignupModal: () => void
   extend: boolean
   close: () => void
 }
 
-const Sidenav: React.FC<Props> = ({ extend, close }) => {
+const Sidenav: React.FC<Props> = ({ extend, close, openSigninModal, openSignupModal }) => {
   const ref: any = useRef()
   const { endUserSession } = useSessionHandler()
 
@@ -51,8 +53,8 @@ const Sidenav: React.FC<Props> = ({ extend, close }) => {
           </span>
 
           <ul className={styles['nav-items-container']}>
-            <li className={styles['nav-item']}> <IconWrapper icon='person' iconStyles={navItemsIconStyles} /> Sign in</li>
-            <li className={styles['nav-item']}> <IconWrapper icon='person' iconStyles={navItemsIconStyles} /> Sign up</li>
+            <li className={styles['nav-item']}> <IconWrapper icon='person' iconStyles={navItemsIconStyles} action={openSigninModal}/> Sign in</li>
+            <li className={styles['nav-item']}> <IconWrapper icon='person' iconStyles={navItemsIconStyles} action={openSignupModal}/> Sign up</li>
             <li className={styles['nav-item']}> <IconWrapper icon='menu_book' iconStyles={navItemsIconStyles} /> Guide</li>
             <li className={styles['nav-item']}><IconWrapper icon='account_circle' iconStyles={navItemsIconStyles} /> View profile</li>
             <li className={styles['nav-item']} onClick={endUserSession}> <IconWrapper icon='logout' iconStyles={navItemsIconStyles} /> Logout</li>
