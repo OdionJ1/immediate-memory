@@ -3,6 +3,7 @@ import { useState, useRef } from 'react'
 const useGame = () => {
   const count = useRef<number>(1)
   const loadingTimeout = useRef<NodeJS.Timeout>()
+  const countDownTimeout = useRef<NodeJS.Timeout>()
 
   const [resultModalIsOpen, setResultModalIsOpen] = useState<boolean>(false)
   const [randomNumber, setRandomNumber] = useState<string>('')
@@ -31,6 +32,7 @@ const useGame = () => {
     setResultModalIsOpen(false)
     setUserAnswer('')
     setShowCorrectAnswer(false)
+    clearTimeout(countDownTimeout.current)
     clearTimeout(loadingTimeout.current)
     setGameInSession(true)
     setShowLoader(false)
@@ -53,7 +55,7 @@ const useGame = () => {
       setShowUserAnswer(true)
     }, 2500)
 
-    setTimeout(() => {
+    countDownTimeout.current = setTimeout(() => {
       setCountDownTimer('0')
 
       loadingTimeout.current = setTimeout(() => {
@@ -70,6 +72,7 @@ const useGame = () => {
 
   const stopGame = () => {
     clearTimeout(loadingTimeout.current)
+    clearTimeout(countDownTimeout.current)
     setNumberOfDigits(2)
     setShowCorrectAnswer(true)
     setShowLoader(false)

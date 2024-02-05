@@ -66,22 +66,28 @@ const Game = () => {
         navbarStyles={{ backgroundColor: `${styles['im-purple-light']}`}}
         rightSectionComponent={
           <>
-            <div className={styles['icon-container']}>
-              <IconWrapper icon='menu' iconStyles={{ color: '#ffffff', fontSize: '2rem' }} action={() => setSidenavIsExtended(!sidenavIsExtended)}/>
-            </div>
-            <ul className={styles['nav-items-container']}>
-              {
-                !currentUser && (
-                  <>
-                    <li className={styles['nav-item']} onClick={() => setModalToRender(Modal.signinModal)}>Sign in</li>
-                    <li className={styles['nav-item']} onClick={() => setModalToRender(Modal.signupModal)}>Sign up</li>
-                  </>
-                )
-              }
-              {currentUser && <li className={styles['nav-item']}>View profile</li>}
-              <li className={styles['nav-item']}>Guide</li>
-              {currentUser && <li className={styles['nav-item']} onClick={endUserSession}>Logout</li>}
-            </ul>
+          {
+            !gameInSession && (
+              <>
+                <div className={styles['icon-container']}>
+                  <IconWrapper icon='menu' iconStyles={{ color: '#ffffff', fontSize: '2rem' }} action={() => setSidenavIsExtended(!sidenavIsExtended)}/>
+                </div>
+                <ul className={styles['nav-items-container']}>
+                  {
+                    !currentUser && (
+                      <>
+                        <li className={styles['nav-item']} onClick={() => setModalToRender(Modal.signinModal)}>Sign in</li>
+                        <li className={styles['nav-item']} onClick={() => setModalToRender(Modal.signupModal)}>Sign up</li>
+                      </>
+                    )
+                  }
+                  {currentUser && <li className={styles['nav-item']}>View profile</li>}
+                  <li className={styles['nav-item']}>Guide</li>
+                  {currentUser && <li className={styles['nav-item']} onClick={endUserSession}>Logout</li>}
+                </ul>
+              </>
+            )
+          }
           </>
         }
       />
