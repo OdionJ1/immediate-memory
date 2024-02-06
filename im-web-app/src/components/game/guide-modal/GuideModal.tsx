@@ -54,7 +54,7 @@ const GuideModal: React.FC<Props> = ({ closeModal, openSigninModal }) => {
 
         <p>How many digits can you memorize?</p>
         
-        {!currentUser && <p><span style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={openSigninModal}>Sign in</span> to save you high score</p>}
+        {!currentUser && <p><span style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={openSigninModal}>Sign in</span> to save your high score</p>}
 
       </div>
 
