@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie';
 import { useSelector } from 'react-redux';
@@ -18,6 +18,8 @@ function App({ authApi }: Props) {
   const { resumeUserSession, endUserSession } = useSessionHandler()
   const [cookies] = useCookies()
 
+  const [loadingAuth, setLoadingAuth] = useState<boolean>(false)
+
   useEffect(() => {
     if(!currentUser){
       checkIfUserIsLoggedIn()
@@ -28,6 +30,7 @@ function App({ authApi }: Props) {
 
 
   const checkIfUserIsLoggedIn = async () => {
+    setLoadingAuth(true)
     const sessionId = cookies['sessionId']
 
     if(sessionId) {
@@ -40,7 +43,11 @@ function App({ authApi }: Props) {
     } else {
       endUserSession()
     }
+
+    setLoadingAuth(false)
   }
+
+  if(loadingAuth) return <></>
 
   return (
     <div className="App">
