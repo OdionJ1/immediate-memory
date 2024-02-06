@@ -6,6 +6,7 @@ import { RootState } from './redux/store';
 import { User } from './models/user';
 import { getUserByToken } from './services/user.service';
 import { AuthAxiosInstance, withAuthApi } from './common/components/auth/withAuthApi';
+import { Toaster } from 'react-hot-toast';
 import useSessionHandler from './common/components/auth/useSessionHandler';
 import Game from './pages/game/Game';
 import './App.css';
@@ -47,7 +48,11 @@ function App({ authApi }: Props) {
     setLoadingAuth(false)
   }
 
-  if(loadingAuth) return <></>
+  if(loadingAuth) return (
+    <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+      Loading...
+    </div>
+  )
 
   return (
     <div className="App">
@@ -56,6 +61,7 @@ function App({ authApi }: Props) {
         <Route path='' element={<Navigate to='/game' />} />
         <Route path='*' element={<Navigate to='/game' />} />
       </Routes>
+      <Toaster />
     </div>
   );
 }

@@ -61,7 +61,7 @@ const GuideModal: React.FC<Props> = ({ closeModal, openSigninModal }) => {
       <hr />
 
       <div className={styles['btn-container']}>
-        <button className={styles['btn']} onClick={closeModal}>Okay</button>
+        <button className={styles['btn']} onClick={closeModal}>Close</button>
       </div>
     </div>
   )

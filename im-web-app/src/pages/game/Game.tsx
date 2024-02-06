@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { User } from '../../models/user';
+import toast from 'react-hot-toast';
 import CustomTopnav from '../../common/components/custom-top-nav/CustomTopnav'
 import ProgressBar from "@ramonak/react-progress-bar";
 import useSessionHandler from '../../common/components/auth/useSessionHandler'
@@ -12,8 +13,8 @@ import CustomModal from '../../common/components/custom-modal/CustomModal';
 import ResultModal from '../../components/game/result-modal/ResultModal';
 import SignupModal from '../../components/user/sign-up-modal/SignupModal';
 import SignInModal from '../../components/user/sign-in-modal/SignInModal';
-import styles from './game.module.scss'
 import GuideModal from '../../components/game/guide-modal/GuideModal';
+import styles from './game.module.scss'
 
 
 enum Modal {
@@ -66,6 +67,11 @@ const Game = () => {
     }
   }
 
+  const logout = () => {
+    endUserSession()
+    toast('Successfully logged out')
+  }
+
 
   return (
     <div className={styles['container']}>
@@ -90,7 +96,7 @@ const Game = () => {
                   }
                   {currentUser && <li className={styles['nav-item']}>View profile</li>}
                   <li className={styles['nav-item']} onClick={() => setModalToRender(Modal.guideModal)}>Guide</li>
-                  {currentUser && <li className={styles['nav-item']} onClick={endUserSession}>Logout</li>}
+                  {currentUser && <li className={styles['nav-item']} onClick={logout}>Logout</li>}
                 </ul>
               </>
             )
