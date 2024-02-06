@@ -1,0 +1,40 @@
+@import '../../../common/styles/styles.scss';
+
+.container {
+
+  .header {
+    font-size: 2rem;
+    color: $im-purple;
+    text-align: center;
+  }
+
+  .guide-section {
+    margin: 0rem 1rem;
+
+    .sub-header {
+      font-size: 1.5rem;
+      color: $im-purple;
+      text-align: center;
+      margin: 1rem auto;
+    }
+
+    p {
+      margin: 0.5rem 0;
+      font-size: 1.5rem;
+      color: $im-purple;
+    }
+  }
+
+  .btn-container {
+    text-align: center;
+
+    .btn {
+      @include purpleBtnStyles();
+      margin: 1rem 0rem;
+    }
+  }
+}
+
+hr {
+  margin: 0.5rem 0rem;
+}

@@ -10,11 +10,12 @@ import styles from './sidenav.module.scss'
 interface Props {
   openSigninModal: () => void
   openSignupModal: () => void
+  openGuideModal: () => void
   extend: boolean
   close: () => void
 }
 
-const Sidenav: React.FC<Props> = ({ extend, close, openSigninModal, openSignupModal }) => {
+const Sidenav: React.FC<Props> = ({ extend, close, openSigninModal, openSignupModal, openGuideModal }) => {
   const currentUser = useSelector<RootState>(({ user: { currentUser }}) => currentUser) as User | null
 
   const ref: any = useRef()
@@ -66,7 +67,7 @@ const Sidenav: React.FC<Props> = ({ extend, close, openSigninModal, openSignupMo
                 </>
               )
             }
-            <li className={styles['nav-item']}> <IconWrapper icon='menu_book' iconStyles={navItemsIconStyles} /> Guide</li>
+            <li className={styles['nav-item']} onClick={openGuideModal}> <IconWrapper icon='menu_book' iconStyles={navItemsIconStyles}/> Guide</li>
             {currentUser && <li className={styles['nav-item']}><IconWrapper icon='account_circle' iconStyles={navItemsIconStyles} /> View profile</li>}
             {currentUser && <li className={styles['nav-item']} onClick={endUserSession}> <IconWrapper icon='logout' iconStyles={navItemsIconStyles} /> Logout</li>}
             

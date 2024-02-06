@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { User } from '../../models/user';
@@ -13,6 +13,7 @@ import ResultModal from '../../components/game/result-modal/ResultModal';
 import SignupModal from '../../components/user/sign-up-modal/SignupModal';
 import SignInModal from '../../components/user/sign-in-modal/SignInModal';
 import styles from './game.module.scss'
+import GuideModal from '../../components/game/guide-modal/GuideModal';
 
 
 enum Modal {
@@ -26,6 +27,10 @@ const Game = () => {
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const
   const { endUserSession } = useSessionHandler()
   
+  useEffect(() => {
+    setModalToRender(Modal.guideModal)
+  }, [])
+
   const { 
     randomNumber, 
     validate,
@@ -53,6 +58,8 @@ const Game = () => {
         return <SignupModal openSigninModal={() => setModalToRender(Modal.signinModal)}/>
       case Modal.signinModal:
         return <SignInModal />
+      case Modal.guideModal:
+        return <GuideModal closeModal={() => setModalToRender(null)}/>
       
       default:
         return <></>
@@ -82,7 +89,7 @@ const Game = () => {
                     )
                   }
                   {currentUser && <li className={styles['nav-item']}>View profile</li>}
-                  <li className={styles['nav-item']}>Guide</li>
+                  <li className={styles['nav-item']} onClick={() => setModalToRender(Modal.guideModal)}>Guide</li>
                   {currentUser && <li className={styles['nav-item']} onClick={endUserSession}>Logout</li>}
                 </ul>
               </>
@@ -114,9 +121,7 @@ const Game = () => {
 
           <hr className={styles['hr']} />
 
-          {
-            showLoader && <ProgressBar completed={countDownTimer} maxCompleted={Number(loadingTimerDelay)} transitionDuration={`${loadingTimerDelay}s`} isLabelVisible={false} />
-          }
+          { showLoader && <ProgressBar completed={countDownTimer} maxCompleted={Number(loadingTimerDelay)} transitionDuration={`${loadingTimerDelay}s`} isLabelVisible={false} /> }
 
           <div className={styles['controls-section']}>
             <div className={styles['numbers-grid']}>
@@ -146,6 +151,7 @@ const Game = () => {
         close={() => setSidenavIsExtended(false)} 
         openSigninModal={() => setModalToRender(Modal.signinModal)} 
         openSignupModal={() => setModalToRender(Modal.signupModal)}
+        openGuideModal={() => setModalToRender(Modal.guideModal)}
       />
 
       {
