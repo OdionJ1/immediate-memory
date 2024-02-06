@@ -59,7 +59,7 @@ const Game = () => {
       case Modal.signinModal:
         return <SignInModal />
       case Modal.guideModal:
-        return <GuideModal closeModal={() => setModalToRender(null)}/>
+        return <GuideModal closeModal={() => setModalToRender(null)} openSigninModal={() => setModalToRender(Modal.signinModal)} />
       
       default:
         return <></>

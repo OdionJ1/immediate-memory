@@ -6,9 +6,10 @@ import styles from './guideModal.module.scss'
 
 interface Props {
   closeModal: () => void
+  openSigninModal: () => void
 }
 
-const GuideModal: React.FC<Props> = ({ closeModal }) => {
+const GuideModal: React.FC<Props> = ({ closeModal, openSigninModal }) => {
   const currentUser = useSelector<RootState>(({ user: { currentUser }}) => currentUser) as User
 
   const timeOfDay = useMemo((): 'morning' | 'afternoon' | 'evening' => {
@@ -52,6 +53,9 @@ const GuideModal: React.FC<Props> = ({ closeModal }) => {
         <p>Each time you pass a level the number to remember will have more digits</p>
 
         <p>How many digits can you memorize?</p>
+        
+        {!currentUser && <p><span style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={openSigninModal}>Sign in</span> to save you high score</p>}
+
       </div>
 
       <hr />
