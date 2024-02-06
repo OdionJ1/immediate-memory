@@ -2,6 +2,7 @@ import React, { CSSProperties, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store'
 import { User } from '../../../models/user'
+import toast from 'react-hot-toast';
 import useSessionHandler from '../../../common/components/auth/useSessionHandler'
 import IconWrapper from '../../../common/components/icon-wrapper/IconWrapper'
 import styles from './sidenav.module.scss'
@@ -49,6 +50,11 @@ const Sidenav: React.FC<Props> = ({ extend, close, openSigninModal, openSignupMo
     marginRight: '0.5rem'
   }
 
+  const logout = () => {
+    endUserSession()
+    toast('Successfully logged out')
+  }
+
   return (
     <div ref={ref} className={styles['container']} style={{ transform: extend ? 'none' : 'translate(100%)' }}>
       {
@@ -69,7 +75,7 @@ const Sidenav: React.FC<Props> = ({ extend, close, openSigninModal, openSignupMo
             }
             <li className={styles['nav-item']} onClick={openGuideModal}> <IconWrapper icon='menu_book' iconStyles={navItemsIconStyles}/> Guide</li>
             {currentUser && <li className={styles['nav-item']}><IconWrapper icon='account_circle' iconStyles={navItemsIconStyles} /> View profile</li>}
-            {currentUser && <li className={styles['nav-item']} onClick={endUserSession}> <IconWrapper icon='logout' iconStyles={navItemsIconStyles} /> Logout</li>}
+            {currentUser && <li className={styles['nav-item']} onClick={logout}> <IconWrapper icon='logout' iconStyles={navItemsIconStyles} /> Logout</li>}
             
           </ul>
         </div>
