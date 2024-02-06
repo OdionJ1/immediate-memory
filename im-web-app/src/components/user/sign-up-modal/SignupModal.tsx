@@ -28,6 +28,7 @@ const SignupModal:React.FC<Props> = ({ openSigninModal }) => {
   const [submitErrorMessage, setSubmitErrorMessage] = useState<string | null>('')
 
   const [signUpForm, setSignupForm] = useState<SignUpFormType>(defaultFormValues)
+  const [signupLoading, setSignupLoading] = useState<boolean>(false)
 
 
   useEffect(() => {
@@ -75,6 +76,7 @@ const SignupModal:React.FC<Props> = ({ openSigninModal }) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
+    setSignupLoading(true)
     setSubmitErrorMessage(null)
 
     try {
@@ -93,6 +95,8 @@ const SignupModal:React.FC<Props> = ({ openSigninModal }) => {
         setSubmitErrorMessage('An error occurred')
       }
     }
+
+    setSignupLoading(false)
   }
 
   const formIsValid = () => {
@@ -150,7 +154,9 @@ const SignupModal:React.FC<Props> = ({ openSigninModal }) => {
           { submitErrorMessage && <p className={styles['error-text']}>{submitErrorMessage}</p>}
           
           <div className={styles['submit-btn-container']}>
-            <button className={styles['submit-btn']} onClick={handleSubmit} disabled={!formIsValid()}>Submit</button>
+            <button className={styles['submit-btn']} onClick={handleSubmit} disabled={!formIsValid() || signupLoading}>
+              { signupLoading ? <i className='fa fa-spinner fa-pulse'></i> : 'Submit' }
+            </button>
           </div>
         </form>
 

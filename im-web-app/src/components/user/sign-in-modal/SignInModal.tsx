@@ -15,6 +15,7 @@ const SignInModal = () => {
   })
 
   const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [loginLoading, setLoginLoading] = useState<boolean>(false)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSignUpErrorMessage(null)
@@ -33,6 +34,7 @@ const SignInModal = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
+    setLoginLoading(true)
     setSignUpErrorMessage(null)
 
     try {
@@ -50,6 +52,8 @@ const SignInModal = () => {
         setSignUpErrorMessage('An error occurred')
       }
     }
+
+    setLoginLoading(false)
   }
 
   const formIsValid = () => {
@@ -81,7 +85,9 @@ const SignInModal = () => {
         { signUpErrorMessage && <p className={styles['error-text']}>{signUpErrorMessage}</p> }
         
         <div className={styles['submit-btn-container']}>
-          <button className={styles['submit-btn']} disabled={!formIsValid()} onClick={handleSubmit}>Sign in</button>
+          <button className={styles['submit-btn']} disabled={!formIsValid() || loginLoading} onClick={handleSubmit}>
+            { loginLoading ? <i className='fa fa-spinner fa-pulse'></i> : 'Sign in' }
+          </button>
         </div>
       </form>
     </div>
