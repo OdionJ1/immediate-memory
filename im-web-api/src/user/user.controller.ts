@@ -62,7 +62,7 @@ export class UserController {
       return res.sendStatus(HttpStatus.NOT_FOUND)
     }
     
-    const sessionId = jsonWebToken.sign(JSON.stringify({ email: existingUser.email }), this.configService.get<string>(ConfigKeys.token) as string, { expiresIn: '7d' })
+    const sessionId = jsonWebToken.sign({ email: existingUser.email }, this.configService.get<string>(ConfigKeys.token) as string, { expiresIn: "7d" })
     return res.status(HttpStatus.OK).json({ user: existingUser, sessionId })
   }
 
