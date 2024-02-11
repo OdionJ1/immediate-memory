@@ -12,7 +12,9 @@ const useSessionHandler = () => {
 
   const startUserSession = (user: User, sessionId: string) => {
     const date = new Date()
-    const futureDate = new Date(new Date().setHours(date.getHours() + 10))
+
+    //Cookie expires in 7 days
+    const futureDate = new Date(new Date().setHours(date.getHours() + 168))
 
     setCookie('sessionId', sessionId, {
       expires: futureDate,
