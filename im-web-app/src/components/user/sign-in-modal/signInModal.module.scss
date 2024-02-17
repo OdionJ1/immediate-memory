@@ -38,9 +38,13 @@
     }
 
     .submit-btn-container {
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 2rem;
 
-      button {
+
+      .submit-btn {
         @include purpleBtnStyles();
         margin: 1rem 0rem;
       }

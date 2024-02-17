@@ -1,8 +1,10 @@
 import React, { useState, ChangeEvent } from 'react'
-import * as EmailValidator from 'email-validator';
-import styles from './signInModal.module.scss'
 import { login } from '../../../services/user.service';
+import { signInWithGoogle } from '../../../firebase/firebase.utils';
+import * as EmailValidator from 'email-validator';
 import useSessionHandler from '../../../common/components/auth/useSessionHandler';
+import GoogleButton from 'react-google-button'
+import styles from './signInModal.module.scss'
 
 
 const SignInModal = () => {
@@ -88,6 +90,10 @@ const SignInModal = () => {
           <button className={styles['submit-btn']} disabled={!formIsValid() || loginLoading} onClick={handleSubmit}>
             { loginLoading ? <i className='fa fa-spinner fa-pulse'></i> : 'Sign in' }
           </button>
+
+          <GoogleButton
+            onClick={signInWithGoogle}
+          />
         </div>
       </form>
     </div>
