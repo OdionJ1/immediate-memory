@@ -32,7 +32,7 @@ function App({ authApi }: Props) {
 
   const checkIfUserIsLoggedIn = async () => {
     setLoadingAuth(true)
-    const sessionId = cookies['sessioId']
+    const sessionId = cookies['sessionId']
 
     if(sessionId) {
       try {
