@@ -27,14 +27,15 @@ export class UserController {
       return res.status(HttpStatus.CONFLICT).json('Account already exists')
     }
 
-    const newUser = new User()
-
-    newUser.firstName = user.firstName
-    newUser.lastName = user.lastName
-    newUser.email = user.email
-    newUser.highScore = 0
-    newUser.createdAt = new Date()
-    newUser.passwordHash = generate(user.password)
+    const newUser: User = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      highScore: 0,
+      createdAt: new Date(),
+      passwordHash: generate(user.password),
+      isGoogleUser: false
+    }
 
     await this.userService.createUser(newUser)
     return res.sendStatus(HttpStatus.CREATED)
@@ -64,6 +65,34 @@ export class UserController {
     
     const sessionId = jsonWebToken.sign({ email: existingUser.email }, this.configService.get<string>(ConfigKeys.token) as string, { expiresIn: "7d" })
     return res.status(HttpStatus.OK).json({ user: existingUser, sessionId })
+  }
+
+  @Post('googleLogin')
+  async googleLogin (@Req() req: Request, @Res() res: Response) {
+    const googleUser = req.body.googleUser as UserBody | null
+    
+    if(!googleUser) return res.status(HttpStatus.BAD_REQUEST)
+
+    const dbUser = await this.userService.getUserByEmail(googleUser.email)
+
+    if(dbUser){
+      const sessionId = jsonWebToken.sign({ email: dbUser.email }, this.configService.get<string>(ConfigKeys.token) as string, { expiresIn: "7d" })
+      return res.status(HttpStatus.OK).json({ user: dbUser, sessionId })
+    } else {
+      const newUser: User = {
+        firstName: googleUser.firstName,
+        lastName: googleUser.lastName,
+        email: googleUser.email,
+        highScore: 0,
+        createdAt: new Date(),
+        passwordHash: '',
+        isGoogleUser: true
+      }
+
+      await this.userService.createUser(newUser)
+      const sessionId = jsonWebToken.sign({ email: newUser.email }, this.configService.get<string>(ConfigKeys.token) as string, { expiresIn: "7d" })
+      return res.status(HttpStatus.OK).json({ user: newUser, sessionId })
+    }
   }
 
   @Get('getUserByToken')
@@ -100,5 +129,6 @@ export class UserController {
 
     return res.sendStatus(HttpStatus.UNAUTHORIZED)
   }
+
   
 }

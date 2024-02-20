@@ -7,7 +7,8 @@ export const UserSchema = new mongoose.Schema<User>({
   email: { type: 'String', required: true },
   passwordHash: { type: 'String', required: true },
   highScore: { type: 'Number', required: true },
-  createdAt: { type: 'Date', required: true }
+  createdAt: { type: 'Date', required: true },
+  isGoogleUser: { type: 'Boolean', required: true }
 })
 
 
@@ -16,6 +17,7 @@ export class UserBody {
   lastName: string
   password: string
   email: string
+  isGoogleUser: boolean
 }
 
 export class User implements Omit<UserBody, 'password'> {
@@ -26,6 +28,7 @@ export class User implements Omit<UserBody, 'password'> {
   firstName: string
   lastName: string
   email: string
+  isGoogleUser: boolean
 
   static create = (user: any): User => {
     if(!user) return user;
@@ -38,6 +41,7 @@ export class User implements Omit<UserBody, 'password'> {
     newUser.userId = user.id ?? user.userId
     newUser.highScore = user.highScore
     newUser.passwordHash = user.passwordHash
+    newUser.isGoogleUser = user.isGoogleUser
 
     return newUser
   }
