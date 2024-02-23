@@ -3,11 +3,11 @@ import { SignUpFormType } from '../../../models/signupFormType';
 import { createUser } from '../../../services/user.service';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import * as EmailValidator from 'email-validator';
-import styles from './signupModal.module.scss'
-import GoogleButton from 'react-google-button';
 import { signInWithGoogle } from '../../../firebase/firebase.utils';
+import * as EmailValidator from 'email-validator';
+import GoogleButton from 'react-google-button';
 import useSessionHandler from '../../../common/components/auth/useSessionHandler';
+import styles from './signupModal.module.scss'
 
 
 const defaultFormValues: SignUpFormType = {
