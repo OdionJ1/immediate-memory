@@ -20,6 +20,16 @@
         font-size: 1rem;
       }
 
+      .success-text {
+        color: #0a6726;
+
+        span {
+          text-decoration: underline;
+          cursor: pointer;
+          font-size: 1.1rem;
+        }
+      }
+
       .form-control {
         position: relative;
 
@@ -40,11 +50,14 @@
       }
 
       .submit-btn-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         margin-top: 1rem;
-        text-align: center;
 
         button {
           @include whiteBtnStyles();
+          margin-bottom: 1rem;
         }
       }
     }

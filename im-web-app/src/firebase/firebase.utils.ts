@@ -19,11 +19,7 @@ const provider = new firebase.auth.GoogleAuthProvider()
 provider.setCustomParameters({ prompt: 'select_account' })
 
 export const signInWithGoogle = async () => {
-  try {
-    await auth.signInWithPopup(provider)
-  } catch (err) {
-    console.log(err)
-  }
+  return await auth.signInWithPopup(provider)
 }
 
 export default firebase

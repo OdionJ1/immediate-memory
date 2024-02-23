@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent } from 'react'
 import { login } from '../../../services/user.service';
 import { signInWithGoogle } from '../../../firebase/firebase.utils';
+import { useNavigate } from 'react-router-dom';
 import * as EmailValidator from 'email-validator';
 import useSessionHandler from '../../../common/components/auth/useSessionHandler';
 import GoogleButton from 'react-google-button'
@@ -8,9 +9,10 @@ import styles from './signInModal.module.scss'
 
 
 const SignInModal = () => {
-  const { startUserSession } = useSessionHandler()
+  const navigate = useNavigate()
+  const { startUserSession, startGoogleUserSession } = useSessionHandler()
   const [emailError, setEmailError] = useState<string | null>(null)
-  const [signUpErrorMessage, setSignUpErrorMessage] = useState<string | null>(null)
+  const [signInErrorMessage, setSignInErrorMessage] = useState<string | null>(null)
   const [signinForm, setSignInForm] = useState<{ email: string, password: string }>({
     email: '',
     password: ''
@@ -20,7 +22,7 @@ const SignInModal = () => {
   const [loginLoading, setLoginLoading] = useState<boolean>(false)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSignUpErrorMessage(null)
+    setSignInErrorMessage(null)
     const { name, value } = e.target
 
     setSignInForm({
@@ -37,25 +39,39 @@ const SignInModal = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault()
     setLoginLoading(true)
-    setSignUpErrorMessage(null)
+    setSignInErrorMessage(null)
 
     try {
       const response = await login(signinForm.email, signinForm.password)
       const { user, sessionId } = response.data
       startUserSession(user, sessionId)
+      navigate(0)
     } catch (err: any) {
       if(err.response) {
         if(err.response.status === 404) {
-          setSignUpErrorMessage('Incorrect email or password')
+          setSignInErrorMessage('Incorrect email or password')
         } else {
-          setSignUpErrorMessage('An error occurred')
+          setSignInErrorMessage('An error occurred')
         }
       } else {
-        setSignUpErrorMessage('An error occurred')
+        setSignInErrorMessage('An error occurred')
       }
     }
 
     setLoginLoading(false)
+  }
+
+  const handleGoogleSignIn = async () => {
+    setSignInErrorMessage(null)
+    try {
+      const gUser = await signInWithGoogle()
+      if(gUser.user){
+        startGoogleUserSession(gUser.user)
+        navigate(0)
+      }
+    } catch (err) {
+      setSignInErrorMessage('An error occurred')
+    }
   }
 
   const formIsValid = () => {
@@ -84,7 +100,7 @@ const SignInModal = () => {
         </div>
 
         { emailError && <p className={styles['error-text']}>{emailError}</p> }
-        { signUpErrorMessage && <p className={styles['error-text']}>{signUpErrorMessage}</p> }
+        { signInErrorMessage && <p className={styles['error-text']}>{signInErrorMessage}</p> }
         
         <div className={styles['submit-btn-container']}>
           <button className={styles['submit-btn']} disabled={!formIsValid() || loginLoading} onClick={handleSubmit}>
@@ -92,7 +108,7 @@ const SignInModal = () => {
           </button>
 
           <GoogleButton
-            onClick={signInWithGoogle}
+            onClick={handleGoogleSignIn}
           />
         </div>
       </form>

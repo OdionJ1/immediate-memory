@@ -27,10 +27,6 @@ const Game = () => {
   const currentUser = useSelector<RootState>(({ user: { currentUser }}) => currentUser) as User | null
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const
   const { endUserSession } = useSessionHandler()
-  
-  useEffect(() => {
-    setModalToRender(Modal.guideModal)
-  }, [])
 
   const { 
     randomNumber, 
@@ -48,6 +44,11 @@ const Game = () => {
     showUserAnswer,
     startGame
   } = useGame()
+  
+  useEffect(() => {
+    setModalToRender(Modal.guideModal)
+  }, [])
+
   
   const [sidenavIsExtended, setSidenavIsExtended] = useState<boolean>(false)
   const [modalToRender, setModalToRender] = useState<Modal | null>(null)

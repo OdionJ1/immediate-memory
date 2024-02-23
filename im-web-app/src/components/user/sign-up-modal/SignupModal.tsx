@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import * as EmailValidator from 'email-validator';
 import styles from './signupModal.module.scss'
+import GoogleButton from 'react-google-button';
+import { signInWithGoogle } from '../../../firebase/firebase.utils';
+import useSessionHandler from '../../../common/components/auth/useSessionHandler';
 
 
 const defaultFormValues: SignUpFormType = {
@@ -22,10 +25,14 @@ interface Props {
 const SignupModal:React.FC<Props> = ({ openSigninModal }) => {
   const navigate = useNavigate()
   const [cookies] = useCookies()
+  const { startGoogleUserSession } = useSessionHandler()
+
   const [emailError, setEmailError] = useState<string | null>(null)
   const [passwordError, setPasswordError] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState<boolean>(false)
-  const [submitErrorMessage, setSubmitErrorMessage] = useState<string | null>('')
+  const [submitErrorMessage, setSubmitErrorMessage] = useState<string | null>(null)
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
+  
 
   const [signUpForm, setSignupForm] = useState<SignUpFormType>(defaultFormValues)
   const [signupLoading, setSignupLoading] = useState<boolean>(false)
@@ -41,6 +48,7 @@ const SignupModal:React.FC<Props> = ({ openSigninModal }) => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSubmitErrorMessage(null)
+    setSubmitSuccess(false)
 
     const { name, value } = e.target
 
@@ -78,11 +86,13 @@ const SignupModal:React.FC<Props> = ({ openSigninModal }) => {
     e.preventDefault()
     setSignupLoading(true)
     setSubmitErrorMessage(null)
+    setSubmitSuccess(false)
 
     try {
       const response = await createUser(signUpForm)
       if(response.status === 201) {
         setSignupForm({...defaultFormValues})
+        setSubmitSuccess(true)
       }
     } catch (err: any) {
       if(err.response) {
@@ -98,6 +108,20 @@ const SignupModal:React.FC<Props> = ({ openSigninModal }) => {
 
     setSignupLoading(false)
   }
+
+  const handleGoogleSignIn = async () => {
+    setSubmitErrorMessage(null)
+    try {
+      const gUser = await signInWithGoogle()
+      if(gUser.user){
+        startGoogleUserSession(gUser.user)
+        navigate(0)
+      }
+    } catch (err) {
+      setSubmitErrorMessage('An error occurred')
+    }
+  }
+
 
   const formIsValid = () => {
     return !!signUpForm.email &&
@@ -152,11 +176,18 @@ const SignupModal:React.FC<Props> = ({ openSigninModal }) => {
           { emailError && <p className={styles['error-text']}>{emailError}</p> }
           { passwordError && <p className={styles['error-text']}>{passwordError}</p> }
           { submitErrorMessage && <p className={styles['error-text']}>{submitErrorMessage}</p>}
+
+          { submitSuccess && <p className={styles['success-text']}>Account Successfully created. You can now <span onClick={openSigninModal}>Sign in</span></p>}
           
           <div className={styles['submit-btn-container']}>
             <button className={styles['submit-btn']} onClick={handleSubmit} disabled={!formIsValid() || signupLoading}>
               { signupLoading ? <i className='fa fa-spinner fa-pulse'></i> : 'Submit' }
             </button>
+
+            <GoogleButton
+              onClick={handleGoogleSignIn}
+              label='Sign up with Google'
+            />
           </div>
         </form>
 

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { auth  } from './firebase/firebase.utils';
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie';
 import { useSelector } from 'react-redux';
@@ -14,9 +15,10 @@ import './App.css';
 interface Props extends AuthAxiosInstance {}
 
 function App({ authApi }: Props) {
+  const timer = useRef<NodeJS.Timeout>()
   const currentUser = useSelector<RootState>(({ user: { currentUser }}) => currentUser) as User | null
 
-  const { resumeUserSession, endUserSession } = useSessionHandler()
+  const { resumeUserSession, endUserSession, startGoogleUserSession } = useSessionHandler()
   const [cookies] = useCookies()
 
   const [loadingAuth, setLoadingAuth] = useState<boolean>(false)
@@ -27,25 +29,41 @@ function App({ authApi }: Props) {
     }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser])
-
+  }, [])
 
   const checkIfUserIsLoggedIn = async () => {
     setLoadingAuth(true)
-    const sessionId = cookies['sessionId']
 
-    if(sessionId) {
-      try {
-        const response = await getUserByToken(authApi)
-        resumeUserSession(User.create(response.data))
-      } catch (err) {
-        endUserSession()
-      }
-    } else {
-      endUserSession()
-    }
+    clearTimeout(timer.current)
 
-    setLoadingAuth(false)
+    await new Promise<void>((resolve, reject) => {
+      timer.current = setTimeout(async () => {
+
+        const firebaseUser = auth.currentUser
+
+        if(firebaseUser) {
+          startGoogleUserSession(firebaseUser)
+        } else {
+          const sessionId = cookies['sessionId']
+
+          if(sessionId) {
+            try {
+              const response = await getUserByToken(authApi)
+              resumeUserSession(User.create(response.data))
+            } catch (err) {
+              endUserSession()
+            }
+          } else {
+            endUserSession()
+          }
+
+        }
+
+        setLoadingAuth(false)
+      }, 1000)
+
+      resolve()
+    })
   }
 
   if(loadingAuth) return (

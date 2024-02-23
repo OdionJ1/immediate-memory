@@ -23,3 +23,7 @@ export const updateUser = async (authApi: AxiosInstance, userToUpdate: User) => 
     
   }
 }
+
+export const googleLogin = async (googleUser: User) => {
+  return await axios.post(`${globalConstants.baseUrl}/user/googleLogin`, { googleUser })
+}

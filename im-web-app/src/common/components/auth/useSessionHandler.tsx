@@ -1,12 +1,13 @@
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie'
 import { User } from '../../../models/user'
 import { setCurrentUser } from '../../../redux/user/user.reducer'
+import { googleLogin } from '../../../services/user.service'
+import { auth } from '../../../firebase/firebase.utils'
+import firebase from 'firebase/compat/app'
 
 const useSessionHandler = () => {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
 
   const [, setCookie, removeCookie] = useCookies()
 
@@ -22,7 +23,23 @@ const useSessionHandler = () => {
     })
 
     dispatch(setCurrentUser({ ...user }))
-    navigate(0)
+  }
+
+  const startGoogleUserSession = async (firebaseUser: firebase.User) => {
+    const displayNameArr = firebaseUser.displayName ? firebaseUser.displayName.split(' ') : []
+    const gUser = new User()
+
+    gUser.email = firebaseUser.email ? firebaseUser.email : ''
+    gUser.firstName = displayNameArr[0] ? displayNameArr[0] : ''
+    gUser.lastName = displayNameArr[1] ? displayNameArr[1] : ''
+
+    try {
+      const { data: { user, sessionId }} = await googleLogin(gUser)
+      removeCookie('sessionId')
+      startUserSession(User.create(user), sessionId)
+    } catch (err) {
+      endUserSession()
+    }
   }
 
   const resumeUserSession = (user: User) => {
@@ -30,6 +47,7 @@ const useSessionHandler = () => {
   }
 
   const endUserSession = () => {
+    auth.signOut()
     dispatch(setCurrentUser(null))
     removeCookie('sessionId')
 
@@ -38,6 +56,7 @@ const useSessionHandler = () => {
 
   return {
     startUserSession,
+    startGoogleUserSession,
     resumeUserSession,
     endUserSession
   }

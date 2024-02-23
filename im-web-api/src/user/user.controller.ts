@@ -85,7 +85,7 @@ export class UserController {
         email: googleUser.email,
         highScore: 0,
         createdAt: new Date(),
-        passwordHash: '',
+        passwordHash: '#',
         isGoogleUser: true
       }
 
