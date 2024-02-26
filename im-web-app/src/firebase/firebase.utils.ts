@@ -11,6 +11,7 @@ const config= {
   measurementId: "G-CDEVNX0CQB"
 }
 
+
 firebase.initializeApp(config)
 
 export const auth = firebase.auth()

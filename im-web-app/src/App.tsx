@@ -15,54 +15,43 @@ import './App.css';
 interface Props extends AuthAxiosInstance {}
 
 function App({ authApi }: Props) {
-  const timer = useRef<NodeJS.Timeout>()
   const currentUser = useSelector<RootState>(({ user: { currentUser }}) => currentUser) as User | null
 
   const { resumeUserSession, endUserSession, startGoogleUserSession } = useSessionHandler()
   const [cookies] = useCookies()
 
-  const [loadingAuth, setLoadingAuth] = useState<boolean>(false)
+  const [loadingAuth, setLoadingAuth] = useState<boolean>(true)
 
   useEffect(() => {
-    if(!currentUser){
-      checkIfUserIsLoggedIn()
-    }
+    (async () => {
+      setLoadingAuth(true)
+      if(!currentUser){
+        await checkIfUserIsLoggedIn()
+      }
+      setLoadingAuth(false)
+    })()
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const checkIfUserIsLoggedIn = async () => {
-    setLoadingAuth(true)
+    auth.onAuthStateChanged(async (firebaseUser) => {
+      if(firebaseUser) {
+        startGoogleUserSession(firebaseUser)
+      } else {
+        const sessionId = cookies['sessionId']
 
-    clearTimeout(timer.current)
-
-    await new Promise<void>((resolve, reject) => {
-      timer.current = setTimeout(async () => {
-
-        const firebaseUser = auth.currentUser
-
-        if(firebaseUser) {
-          startGoogleUserSession(firebaseUser)
-        } else {
-          const sessionId = cookies['sessionId']
-
-          if(sessionId) {
-            try {
-              const response = await getUserByToken(authApi)
-              resumeUserSession(User.create(response.data))
-            } catch (err) {
-              endUserSession()
-            }
-          } else {
+        if(sessionId) {
+          try {
+            const response = await getUserByToken(authApi)
+            resumeUserSession(User.create(response.data))
+          } catch (err) {
             endUserSession()
           }
-
+        } else {
+          endUserSession()
         }
-
-        setLoadingAuth(false)
-      }, 1000)
-
-      resolve()
+      }
     })
   }
 
