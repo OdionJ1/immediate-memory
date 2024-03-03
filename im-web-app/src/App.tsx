@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import firebase from 'firebase/compat/app'
 import { auth  } from './firebase/firebase.utils';
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie';
@@ -24,35 +25,43 @@ function App({ authApi }: Props) {
 
   useEffect(() => {
     (async () => {
-      setLoadingAuth(true)
       if(!currentUser){
         await checkIfUserIsLoggedIn()
       }
-      setLoadingAuth(false)
     })()
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const checkIfUserIsLoggedIn = async () => {
-    auth.onAuthStateChanged(async (firebaseUser) => {
-      if(firebaseUser) {
-        startGoogleUserSession(firebaseUser)
-      } else {
-        const sessionId = cookies['sessionId']
+  const getFirebaseUser = (): Promise<firebase.User | null> => {
+    return new Promise((resolve, reject) => {
+      const unsubscribe = auth.onAuthStateChanged(user => {
+        unsubscribe();
+        resolve(user);
+      }, reject);
+   });
+  }
 
-        if(sessionId) {
-          try {
-            const response = await getUserByToken(authApi)
-            resumeUserSession(User.create(response.data))
-          } catch (err) {
-            endUserSession()
-          }
-        } else {
+  const checkIfUserIsLoggedIn = async () => {
+    setLoadingAuth(true)
+    const firebaseUser = await getFirebaseUser()
+    if(firebaseUser) {
+      startGoogleUserSession(firebaseUser)
+    } else {
+      const sessionId = cookies['sessionId']
+
+      if(sessionId) {
+        try {
+          const response = await getUserByToken(authApi)
+          resumeUserSession(User.create(response.data))
+        } catch (err) {
           endUserSession()
         }
+      } else {
+        endUserSession()
       }
-    })
+    }
+    setLoadingAuth(false)
   }
 
   if(loadingAuth) return (
