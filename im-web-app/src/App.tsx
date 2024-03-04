@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import firebase from 'firebase/compat/app'
+import React, { useEffect, useState } from 'react';
+import firebase from './firebase/firebase.utils'
 import { auth  } from './firebase/firebase.utils';
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie';
