@@ -2,7 +2,9 @@
 
 .container {
   background-color: $im-purple-lighter;
-  height: 100vh;
+  min-height: 100vh;
+  padding-bottom: 3rem;
+  height: fit-content;
 
   .nav-items-container {
     display: flex;
@@ -67,6 +69,7 @@
         justify-content: center;
         background-color: #bdc9c2f3;
         height: 20%;
+        height: 10rem;
         width: 80%;
         margin: 0rem auto;
         border-radius: 0.5rem;
