@@ -47,6 +47,7 @@ function App({ authApi }: Props) {
     if(firebaseUser) {
       startGoogleUserSession(firebaseUser)
     } else {
+      console.log('123')
       const sessionId = cookies['sessionId']
 
       if(sessionId) {
