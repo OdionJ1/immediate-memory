@@ -45,7 +45,7 @@ function App({ authApi }: Props) {
     setLoadingAuth(true)
     const firebaseUser = await getFirebaseUser()
     if(firebaseUser) {
-      startGoogleUserSession(firebaseUser)
+      await startGoogleUserSession(firebaseUser)
     } else {
       console.log('123')
       const sessionId = cookies['sessionId']
