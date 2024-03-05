@@ -51,6 +51,7 @@ function App({ authApi }: Props) {
       const sessionId = cookies['sessionId']
 
       if(sessionId) {
+        console.log('1234')
         try {
           const response = await getUserByToken(authApi)
           resumeUserSession(User.create(response.data))
