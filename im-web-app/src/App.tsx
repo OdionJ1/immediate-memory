@@ -24,16 +24,17 @@ function App({ authApi }: Props) {
 
   useEffect(() => {
     (async () => {
-      if(!currentUser && firebaseApp){
+      if(!currentUser){
         await checkIfUserIsLoggedIn()
       }
     })()
 
-  }, [firebaseApp])
+  }, [])
 
   const getFirebaseUser = (): Promise<firebase.User | null> => {
     return new Promise((resolve, reject) => {
       const unsubscribe = auth.onAuthStateChanged(user => {
+        console.log(user)
         unsubscribe();
         resolve(user);
       }, reject);
