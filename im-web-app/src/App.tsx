@@ -34,7 +34,6 @@ function App({ authApi }: Props) {
   const getFirebaseUser = (): Promise<firebase.User | null> => {
     return new Promise((resolve, reject) => {
       const unsubscribe = auth.onAuthStateChanged(user => {
-        console.log(user)
         unsubscribe();
         resolve(user);
       }, reject);
@@ -47,11 +46,9 @@ function App({ authApi }: Props) {
     if(firebaseUser) {
       await startGoogleUserSession(firebaseUser)
     } else {
-      console.log('123')
       const sessionId = cookies['sessionId']
 
       if(sessionId) {
-        console.log('1234')
         try {
           const response = await getUserByToken(authApi)
           resumeUserSession(User.create(response.data))
