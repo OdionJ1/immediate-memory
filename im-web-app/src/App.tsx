@@ -23,7 +23,6 @@ function App({ authApi }: Props) {
   const [loadingAuth, setLoadingAuth] = useState<boolean>(true)
 
   useEffect(() => {
-    console.log(firebaseApp);
     (async () => {
       if(!currentUser && firebaseApp){
         await checkIfUserIsLoggedIn()
