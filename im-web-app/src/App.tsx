@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import firebase from './firebase/firebase.utils'
-import { auth  } from './firebase/firebase.utils';
+import firebase, { auth, firebaseApp  } from './firebase/firebase.utils';
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie';
 import { useSelector } from 'react-redux';
@@ -24,14 +23,14 @@ function App({ authApi }: Props) {
   const [loadingAuth, setLoadingAuth] = useState<boolean>(true)
 
   useEffect(() => {
+    console.log(firebaseApp);
     (async () => {
-      if(!currentUser){
+      if(!currentUser && firebaseApp){
         await checkIfUserIsLoggedIn()
       }
     })()
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [firebaseApp])
 
   const getFirebaseUser = (): Promise<firebase.User | null> => {
     return new Promise((resolve, reject) => {
