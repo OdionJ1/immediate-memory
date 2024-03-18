@@ -12,11 +12,12 @@ interface Props {
   openSigninModal: () => void
   openSignupModal: () => void
   openGuideModal: () => void
+  openProfileModal: () => void
   extend: boolean
   close: () => void
 }
 
-const Sidenav: React.FC<Props> = ({ extend, close, openSigninModal, openSignupModal, openGuideModal }) => {
+const Sidenav: React.FC<Props> = ({ extend, close, openSigninModal, openSignupModal, openGuideModal, openProfileModal }) => {
   const currentUser = useSelector<RootState>(({ user: { currentUser }}) => currentUser) as User | null
 
   const ref: any = useRef()
@@ -74,7 +75,7 @@ const Sidenav: React.FC<Props> = ({ extend, close, openSigninModal, openSignupMo
               )
             }
             <li className={styles['nav-item']} onClick={openGuideModal}> <IconWrapper icon='menu_book' iconStyles={navItemsIconStyles}/> Guide</li>
-            {currentUser && <li className={styles['nav-item']}><IconWrapper icon='account_circle' iconStyles={navItemsIconStyles} /> View profile</li>}
+            {currentUser && <li onClick={openProfileModal} className={styles['nav-item']}><IconWrapper icon='account_circle' iconStyles={navItemsIconStyles} /> View profile</li>}
             {currentUser && <li className={styles['nav-item']} onClick={logout}> <IconWrapper icon='logout' iconStyles={navItemsIconStyles} /> Logout</li>}
             
           </ul>

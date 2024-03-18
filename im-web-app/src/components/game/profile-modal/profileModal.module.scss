@@ -1,0 +1,31 @@
+@import '../../../common/styles/styles.scss';
+
+.container {
+
+  .header {
+    font-size: 1.5rem;
+    color: $im-purple;
+    text-align: center;
+  }
+
+  .form {
+    width: 80%;
+    margin: 1rem auto;
+    
+    .form-control {
+
+      input {
+        @include inputStyles();
+      }
+    }
+
+    .save-btn-container {
+      margin-top: 1rem;
+      text-align: center;
+
+      button{
+        @include purpleBtnStyles()
+      }
+    }
+  }
+}

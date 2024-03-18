@@ -17,7 +17,7 @@ export class User {
     newUser.lastName = user.lastName
     newUser.email = user.email
     newUser.highScore = user.highScore
-    newUser.isGoogleUser = user.isGoogleUser
+    newUser.isGoogleUser = user.isGoogleUser ? true : false
 
     return newUser
   }

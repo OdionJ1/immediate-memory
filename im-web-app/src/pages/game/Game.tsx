@@ -14,13 +14,15 @@ import ResultModal from '../../components/game/result-modal/ResultModal';
 import SignupModal from '../../components/user/sign-up-modal/SignupModal';
 import SignInModal from '../../components/user/sign-in-modal/SignInModal';
 import GuideModal from '../../components/game/guide-modal/GuideModal';
+import ProfileModal from '../../components/game/profile-modal/ProfileModal';
 import styles from './game.module.scss'
 
 
 enum Modal {
   signupModal = 'signupModal',
   signinModal = 'signinModal',
-  guideModal = 'guideModal'
+  guideModal = 'guideModal',
+  profileModal = 'profileModal',
 }
 
 const Game = () => {
@@ -62,7 +64,8 @@ const Game = () => {
         return <SignInModal />
       case Modal.guideModal:
         return <GuideModal closeModal={() => setModalToRender(null)} openSigninModal={() => setModalToRender(Modal.signinModal)} />
-      
+      case Modal.profileModal:
+        return <ProfileModal closeModal={() => setModalToRender(null)} />
       default:
         return <></>
     }
@@ -95,9 +98,9 @@ const Game = () => {
                       </>
                     )
                   }
-                  {currentUser && <li className={styles['nav-item']}>View profile</li>}
+                  { currentUser && <li className={styles['nav-item']} onClick={() => setModalToRender(Modal.profileModal)}>View profile</li> }
                   <li className={styles['nav-item']} onClick={() => setModalToRender(Modal.guideModal)}>Guide</li>
-                  {currentUser && <li className={styles['nav-item']} onClick={logout}>Logout</li>}
+                  { currentUser && <li className={styles['nav-item']} onClick={logout}>Logout</li> }
                 </ul>
               </>
             )
@@ -159,6 +162,7 @@ const Game = () => {
         openSigninModal={() => setModalToRender(Modal.signinModal)} 
         openSignupModal={() => setModalToRender(Modal.signupModal)}
         openGuideModal={() => setModalToRender(Modal.guideModal)}
+        openProfileModal={() => setModalToRender(Modal.profileModal)}
       />
 
       {
