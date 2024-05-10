@@ -108,6 +108,7 @@ const SignInModal = () => {
           </button>
 
           <GoogleButton
+            disabled={loginLoading}
             onClick={handleGoogleSignIn}
           />
         </div>

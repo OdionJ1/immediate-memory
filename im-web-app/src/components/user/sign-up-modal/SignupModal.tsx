@@ -185,6 +185,7 @@ const SignupModal:React.FC<Props> = ({ openSigninModal }) => {
             </button>
 
             <GoogleButton
+              disabled={signupLoading}
               onClick={handleGoogleSignIn}
               label='Sign up with Google'
             />
