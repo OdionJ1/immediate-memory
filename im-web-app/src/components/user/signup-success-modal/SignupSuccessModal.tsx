@@ -9,7 +9,7 @@ const SignupSuccessModal: React.FC<Props> = ({ closeModal }) => {
         <img alt='check-img' src={checkImg} />
       </div>
 
-      <p className={styles['text']}>Accountt successfully created. You can now sign in</p>
+      <p className={styles['text']}>Account successfully created. You can now sign in</p>
 
       <button className={styles['button']} onClick={closeModal}>OK</button>
     </div>
